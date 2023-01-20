@@ -2,120 +2,19 @@ import datetime
 import sqlite3
 
 
-CREATE_MOVIES_TABLE = """
-    CREATE TABLE IF NOT EXISTS
-        movies (
-             id INTEGER PRIMARY KEY AUTOINCREMENT
-            ,title TEXT NOT NULL
-            ,release_timestamp REAL NOT NULL
-            ,UNIQUE(title, release_timestamp)
-        );
-"""
+CREATE_MOVIES_TABLE = open(".//queries//create_table_movies.sql", 'r').read()
+CREATE_USERS_TABLE = open(".//queries//create_table_users.sql", 'r').read()
+CREATE_WATCHED_TABLE = open(".//queries//create_table_watched.sql", 'r').read()
+INSERT_MOVIE = open(".//queries//insert_movie.sql", 'r').read()
+INSERT_USER = open(".//queries//insert_user.sql", 'r').read()
+SELECT_ALL_MOVIES = open(".//queries//select_all_movies.sql", 'r').read()
+SELECT_UPCOMING_MOVIES = open(".//queries//select_upcoming_movies.sql", 'r').read()
+SELECT_WATCHED_MOVIES = open(".//queries//select_watched_movies.sql", 'r').read()
+INSERT_WATCHED_MOVIE = open(".//queries//insert_watched_movie.sql", 'r').read()
+SET_WATCHED_MOVIE = open(".//queries//set_watched_movie.sql", 'r').read()
+SEARCH_MOVIES = open(".//queries//search_movies.sql", 'r').read()
 
-
-CREATE_USERS_TABLE = """
-    CREATE TABLE IF NOT EXISTS
-        users (
-             id INTEGER PRIMARY KEY AUTOINCREMENT
-            ,username TEXT NOT NULL
-            ,UNIQUE (username)
-        );
-"""
-
-
-CREATE_WATCHED_TABLE = """
-    CREATE TABLE IF NOT EXISTS watched (
-         user_username TEXT NOT NULL
-        ,movie_id INTEGER NOT NULL
-        ,PRIMARY KEY (user_username, movie_id)
-        ,FOREIGN KEY (user_username) REFERENCES users(username)
-        ,FOREIGN KEY (movie_id) REFERENCES movies(id)
-    );
-"""
-
-
-INSERT_MOVIE = """
-    INSERT INTO
-        movies (
-              title
-             ,release_timestamp
-        ) VALUES (?, ?);
-"""
-
-INSERT_USER = """
-    INSERT INTO
-        users (
-             username
-        ) VALUES (?);
-"""
-
-
-SELECT_ALL_MOVIES = """
-    SELECT
-        *
-    FROM
-        movies
-    ;
-"""
-
-
-SELECT_UPCOMING_MOVIES = """
-    SELECT
-        *
-    FROM
-        movies
-    WHERE
-        release_timestamp > ?
-    ;
-"""
-
-
-SELECT_WATCHED_MOVIES = """
-    SELECT
-        m.*
-    FROM
-        movies AS m 
-    INNER JOIN watched as w ON
-        m.id = w.movie_id
-    INNER JOIN users as u ON
-        w.user_username = u.username
-    WHERE
-        u.username = ?
-    ;
-"""
-
-
-INSERT_WATCHED_MOVIE = """
-    INSERT INTO
-        watched (
-             user_username
-            ,movie_id
-        ) VALUES (?, ?)
-"""
-
-
-SET_MOVIE_WATCHED = """
-    UPDATE
-        movies
-    SET
-        watched = 1
-    WHERE
-        title = ?
-    ;
-"""
-
-
-SEARCH_MOVIES = """
-    SELECT
-        *
-    FROM
-        movies
-    WHERE
-        title LIKE ?
-    ;
-"""
-
-connection = sqlite3.connect("data.db")
+connection = sqlite3.connect(".//db//data.db")
 
 
 def create_table():
