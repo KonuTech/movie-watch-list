@@ -13,7 +13,7 @@ CREATE_MOVIES_TABLE = """
 """
 
 
-INSERT_MOVIES = """
+INSERT_MOVIE = """
     INSERT INTO
         movies (
              title
@@ -77,12 +77,12 @@ def create_table():
 def add_movie(title, release_timestamp):
     with connection:
         connection.execute(
-            INSERT_MOVIES, (title, release_timestamp)
+            INSERT_MOVIE, (title, release_timestamp)
         )
 
 
 def get_movies(upcoming=False):
-    with connection:
+    with sqlite3.connect("data.db") as connection:
         cursor = connection.cursor()
         if upcoming:
             today_timestamp = datetime.datetime.today().timestamp()
@@ -104,7 +104,7 @@ def watch_movie(title):
         )
 
 
-def get_watched_movie():
+def get_watched_movies():
     with connection:
         cursor = connection.cursor()
         cursor.execute(
