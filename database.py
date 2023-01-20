@@ -6,20 +6,47 @@ CREATE_MOVIES_TABLE = """
     CREATE TABLE IF NOT EXISTS
         movies (
              id INTEGER PRIMARY KEY AUTOINCREMENT
-            ,title TEXT
-            ,release_timestamp REAL
-            ,watched INTEGER
+            ,title TEXT NOT NULL
+            ,release_timestamp REAL NOT NULL
+            ,UNIQUE(title, release_timestamp)
         );
+"""
+
+
+CREATE_USERS_TABLE = """
+    CREATE TABLE IF NOT EXISTS
+        users (
+             id INTEGER PRIMARY KEY AUTOINCREMENT
+            ,username TEXT NOT NULL
+            ,UNIQUE (username)
+        );
+"""
+
+
+CREATE_WATCHED_TABLE = """
+    CREATE TABLE IF NOT EXISTS watched (
+         user_username TEXT NOT NULL
+        ,movie_id INTEGER NOT NULL
+        ,PRIMARY KEY (user_username, movie_id)
+        ,FOREIGN KEY (user_username) REFERENCES users(username)
+        ,FOREIGN KEY (movie_id) REFERENCES movies(id)
+    );
 """
 
 
 INSERT_MOVIE = """
     INSERT INTO
         movies (
-             title
-            ,release_timestamp
-            ,watched
-        ) VALUES (?, ?, 0);
+              title
+             ,release_timestamp
+        ) VALUES (?, ?);
+"""
+
+INSERT_USER = """
+    INSERT INTO
+        users (
+             username
+        ) VALUES (?);
 """
 
 
@@ -45,12 +72,25 @@ SELECT_UPCOMING_MOVIES = """
 
 SELECT_WATCHED_MOVIES = """
     SELECT
-        *
+        m.*
     FROM
-        movies
+        movies AS m 
+    INNER JOIN watched as w ON
+        m.id = w.movie_id
+    INNER JOIN users as u ON
+        w.user_username = u.username
     WHERE
-        watched = 1
+        u.username = ?
     ;
+"""
+
+
+INSERT_WATCHED_MOVIE = """
+    INSERT INTO
+        watched (
+             user_username
+            ,movie_id
+        ) VALUES (?, ?)
 """
 
 
@@ -64,6 +104,17 @@ SET_MOVIE_WATCHED = """
     ;
 """
 
+
+SEARCH_MOVIES = """
+    SELECT
+        *
+    FROM
+        movies
+    WHERE
+        title LIKE ?
+    ;
+"""
+
 connection = sqlite3.connect("data.db")
 
 
@@ -72,6 +123,21 @@ def create_table():
         connection.execute(
             CREATE_MOVIES_TABLE
         )
+        connection.execute(
+            CREATE_USERS_TABLE
+        )
+        connection.execute(
+            CREATE_WATCHED_TABLE
+        )
+
+
+def add_user(username):
+    try:
+        with connection:
+            connection.execute(INSERT_USER, (username,))
+    except:
+        print("UNIQUE constraint failed: users.username")
+        pass
 
 
 def add_movie(title, release_timestamp):
@@ -97,18 +163,30 @@ def get_movies(upcoming=False):
         return cursor.fetchall()
 
 
-def watch_movie(title):
+def search_movies(search_term):
     with connection:
-        connection.execute(
-            SET_MOVIE_WATCHED, (title, )
-        )
+        cursor = connection.cursor()
+        cursor.execute(SEARCH_MOVIES, (f"%{search_term}%",))
+
+        return cursor.fetchall()
 
 
-def get_watched_movies():
+def watch_movie(username, movie_id):
+    try:
+        with connection:
+            connection.execute(
+                INSERT_WATCHED_MOVIE, (username, movie_id)
+            )
+    except:
+        print("UNIQUE constraint failed: users.username")
+        pass
+
+
+def get_watched_movies(username):
     with connection:
         cursor = connection.cursor()
         cursor.execute(
-            SELECT_WATCHED_MOVIES
+            SELECT_WATCHED_MOVIES, (username, )
         )
 
         return cursor.fetchall()
