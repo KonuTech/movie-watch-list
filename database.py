@@ -47,7 +47,7 @@ def add_movie(title, release_timestamp):
 
 
 def get_movies(upcoming=False):
-    with sqlite3.connect("data.db") as connection:
+    with sqlite3.connect(".//db//data.db") as connection:
         cursor = connection.cursor()
         if upcoming:
             today_timestamp = datetime.datetime.today().timestamp()
