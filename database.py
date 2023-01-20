@@ -3,7 +3,7 @@ import sqlite3
 
 
 CREATE_MOVIES_TABLE = """
-    CREATE TABLE IF EXISTS
+    CREATE TABLE IF NOT EXISTS
         movies (
              id INTEGER PRIMARY KEY AUTOINCREMENT
             ,title TEXT
@@ -54,7 +54,17 @@ SELECT_WATCHED_MOVIES = """
 """
 
 
-connection = sqlite3.connect(":memory:")
+SET_MOVIE_WATCHED = """
+    UPDATE
+        movies
+    SET
+        watched = 1
+    WHERE
+        title = ?
+    ;
+"""
+
+connection = sqlite3.connect("data.db")
 
 
 def create_table():
@@ -89,7 +99,9 @@ def get_movies(upcoming=False):
 
 def watch_movie(title):
     with connection:
-        pass
+        connection.execute(
+            SET_MOVIE_WATCHED, (title, )
+        )
 
 
 def get_watched_movie():
