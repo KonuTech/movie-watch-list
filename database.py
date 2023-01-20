@@ -13,6 +13,8 @@ SELECT_WATCHED_MOVIES = open(".//queries//select_watched_movies.sql", 'r').read(
 INSERT_WATCHED_MOVIE = open(".//queries//insert_watched_movie.sql", 'r').read()
 SET_WATCHED_MOVIE = open(".//queries//set_watched_movie.sql", 'r').read()
 SEARCH_MOVIES = open(".//queries//search_movies.sql", 'r').read()
+CREATE_RELEASE_INDEX = open(".//queries//create_release_index.sql", 'r').read()
+
 
 connection = sqlite3.connect(".//db//data.db")
 
@@ -27,6 +29,9 @@ def create_table():
         )
         connection.execute(
             CREATE_WATCHED_TABLE
+        )
+        connection.execute(
+            CREATE_RELEASE_INDEX
         )
 
 
