@@ -1,5 +1,5 @@
 INSERT INTO
     users (
         username
-    ) VALUES (?)
+    ) VALUES (%s)
 ;

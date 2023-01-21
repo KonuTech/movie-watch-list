@@ -7,5 +7,5 @@ INNER JOIN watched as w ON
 INNER JOIN users as u ON
     w.user_username = u.username
 WHERE
-    u.username = ?
+    u.username = %s
 ;

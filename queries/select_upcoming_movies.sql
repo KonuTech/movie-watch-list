@@ -3,5 +3,5 @@ SELECT
 FROM
     movies
 WHERE
-    release_timestamp > ?
+    release_timestamp > %s
 ;

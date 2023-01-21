@@ -3,5 +3,5 @@ SELECT
 FROM
     movies
 WHERE
-    title LIKE ?
+    title LIKE %s
 ;

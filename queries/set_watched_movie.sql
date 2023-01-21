@@ -3,5 +3,5 @@ UPDATE
 SET
     watched = 1
 WHERE
-    title = ?
+    title = %s
 ;
