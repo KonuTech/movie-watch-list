@@ -4,7 +4,8 @@
 
 CREATE TABLE IF NOT EXISTS public.movies
 (
-    id integer NOT NULL DEFAULT nextval('movies_id_seq'::regclass),
+    --id integer NOT NULL DEFAULT nextval('movies_id_seq'::regclass),
+    id SERIAL,
     title text COLLATE pg_catalog."default" NOT NULL,
     release_timestamp real NOT NULL,
     CONSTRAINT movies_pkey PRIMARY KEY (id),
