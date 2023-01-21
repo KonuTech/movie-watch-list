@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="SqlDialectMappings">
-    <file url="file://$PROJECT_DIR$/queries/create_table_movies.sql" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/queries/create_release_index.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/queries/create_table_movies.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/queries/create_table_users.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/queries/create_table_watched.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/queries/insert_movie.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/queries/insert_user.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/queries/insert_watched_movie.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/queries/search_movies.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/queries/select_all_movies.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/queries/select_upcoming_movies.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/queries/select_watched_movies.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/queries/set_watched_movie.sql" dialect="PostgreSQL" />
     <file url="PROJECT" dialect="SQLite" />
   </component>
 </project>
